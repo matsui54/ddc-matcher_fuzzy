@@ -17,6 +17,10 @@ function fuzzy_escape(str: string, camelcase: boolean): string {
   return p;
 }
 
+type Params = {
+  camelcase: boolean;
+};
+
 export class Filter extends BaseFilter {
   filter(
     _denops: Denops,
@@ -28,13 +32,11 @@ export class Filter extends BaseFilter {
     completeStr: string,
     candidates: Candidate[],
   ): Promise<Candidate[]> {
+    console.log(filterParams.camelcase);
     if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
       const pattern = new RegExp(
-        fuzzy_escape(
-          completeStr.toLowerCase(),
-          filterParams.camelcase as boolean,
-        ),
+        fuzzy_escape(completeStr, filterParams.camelcase as boolean),
       );
       return Promise.resolve(candidates.filter(
         (candidate) =>
@@ -51,5 +53,12 @@ export class Filter extends BaseFilter {
           candidate.word.match(pattern),
       ));
     }
+  }
+
+  params(): Record<string, unknown> {
+    const params: Params = {
+      camelcase: false,
+    };
+    return params as unknown as Record<string, unknown>;
   }
 }
