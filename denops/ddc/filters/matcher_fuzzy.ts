@@ -9,11 +9,11 @@ import {
 import { Denops } from "https://deno.land/x/ddc_vim@v0.0.10/deps.ts#^";
 
 function fuzzy_escape(str: string, camelcase: boolean): string {
-  let p = str.replace(/([a-zA-Z0-9])/g, "$1.*");
+  let p = str.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
   if (camelcase && str.match(/[A-Z]/)) {
-    p = p.replace(/([a-z])/, ((pat) => `[${pat.concat(pat.toUpperCase())}]`));
+    p = p.replaceAll(/([a-z])/g, ((pat) => `[${pat.concat(pat.toUpperCase())}]`));
   }
-  p = p.replace(/([a-zA-Z0-9_])\.\*/g, "$1[^$1]*");
+  p = p.replaceAll(/([a-zA-Z0-9_])\.\*/g, "$1[^$1]*");
   return p;
 }
 
