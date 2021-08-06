@@ -10,3 +10,9 @@ silent! call ddc#register_filter({
       \ 'path': printf('%s/denops/ddc/filters/%s.ts',
       \                fnamemodify(expand('<sfile>'), ':h:h:h'), s:name),
       \ })
+
+silent! call ddc#register_filter({
+      \ 'name': 'matcher_full_fuzzy',
+      \ 'path': printf('%s/denops/ddc/filters/%s.ts',
+      \                fnamemodify(expand('<sfile>'), ':h:h:h'), 'matcher_full_fuzzy'),
+      \ })
