@@ -32,7 +32,6 @@ export class Filter extends BaseFilter {
     completeStr: string,
     candidates: Candidate[],
   ): Promise<Candidate[]> {
-    console.log(filterParams.camelcase);
     if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
       const pattern = new RegExp(
