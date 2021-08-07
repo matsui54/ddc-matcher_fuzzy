@@ -9,7 +9,9 @@ import {
 import { Denops } from "./deps.ts";
 
 export function fuzzy_escape(str: string, camelcase: boolean): string {
-  let p = str.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
+  // escape special letters
+  let p = str.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&');
+  p = str.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
   if (camelcase && str.match(/[A-Z]/)) {
     p = p.replaceAll(/([a-z])/g, ((pat) => `[${pat.concat(pat.toUpperCase())}]`));
   }
