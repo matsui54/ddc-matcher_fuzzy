@@ -70,8 +70,5 @@ Deno.test("fuzzy filter", async () => {
     { "word": "foobar" },
   ]);
 
-  testCandidates = [
-    { "word": "foobar" },
-  ];
   await filterWrapper("foo+=", testCandidates, false, false);
 });
