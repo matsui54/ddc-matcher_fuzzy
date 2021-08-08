@@ -9,21 +9,9 @@ import {
 } from "./deps.ts";
 import { Filter } from "./matcher_fuzzy.ts";
 
-function testCandidates(): Candidate[] {
-  return [
-    { "word": "foobar" },
-    { "word": "afoobar" },
-    { "word": "fooBar" },
-    { "word": "afooBar" },
-    { "word": "Foobar" },
-    { "word": "aFoobar" },
-    { "word": "FooBar" },
-    { "word": "aFooBar" },
-  ];
-}
-
 async function filterWrapper(
   complete_str: string,
+  candidates: Candidate[],
   ignorecase: boolean = true,
   camelcase: boolean = true,
 ): Promise<Candidate[]> {
@@ -36,12 +24,23 @@ async function filterWrapper(
     {} as FilterOptions,
     { "camelcase": camelcase },
     complete_str,
-    testCandidates(),
+    candidates,
   );
 }
 
 Deno.test("fuzzy filter", async () => {
-  assertEquals(await filterWrapper(""), [
+  let testCandidates = [
+    { "word": "foobar" },
+    { "word": "afoobar" },
+    { "word": "fooBar" },
+    { "word": "afooBar" },
+    { "word": "Foobar" },
+    { "word": "aFoobar" },
+    { "word": "FooBar" },
+    { "word": "aFooBar" },
+  ];
+
+  assertEquals(await filterWrapper("", testCandidates), [
     { "word": "foobar" },
     { "word": "afoobar" },
     { "word": "fooBar" },
@@ -51,24 +50,28 @@ Deno.test("fuzzy filter", async () => {
     { "word": "FooBar" },
     { "word": "aFooBar" },
   ]);
+  assertEquals(await filterWrapper("FOBR", testCandidates), [
+    { "word": "foobar" },
+    { "word": "fooBar" },
+    { "word": "Foobar" },
+    { "word": "FooBar" },
+  ]);
+  assertEquals(await filterWrapper("foBr", testCandidates, false, true), [
+    { "word": "fooBar" },
+    { "word": "FooBar" },
+  ]);
+  assertEquals(await filterWrapper("fobr", testCandidates, true, false), [
+    { "word": "foobar" },
+    { "word": "fooBar" },
+    { "word": "Foobar" },
+    { "word": "FooBar" },
+  ]);
+  assertEquals(await filterWrapper("fobr", testCandidates, false, false), [
+    { "word": "foobar" },
+  ]);
 
-  assertEquals(await filterWrapper("FOBR"), [
+  testCandidates = [
     { "word": "foobar" },
-    { "word": "fooBar" },
-    { "word": "Foobar" },
-    { "word": "FooBar" },
-  ]);
-  assertEquals(await filterWrapper("foBr", false, true), [
-    { "word": "fooBar" },
-    { "word": "FooBar" },
-  ]);
-  assertEquals(await filterWrapper("FOBR", true, false), [
-    { "word": "foobar" },
-    { "word": "fooBar" },
-    { "word": "Foobar" },
-    { "word": "FooBar" },
-  ]);
-  assertEquals(await filterWrapper("FOBR", false, false), [
-    { "word": "foobar" },
-  ]);
+  ];
+  await filterWrapper("foo+=", testCandidates, false, false);
 });
