@@ -12,7 +12,7 @@ export function fuzzy_escape(str: string, camelcase: boolean): string {
   // escape special letters
   let p = str.replaceAll(/[.*+?^=!:${}()|[\]\/\\]/g, "\\$&");
   p = p.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
-  if (camelcase && str.match(/[A-Z]/)) {
+  if (camelcase && str.search(/[A-Z]/) != -1) {
     p = p.replaceAll(
       /([a-z])/g,
       ((pat) => `[${pat.concat(pat.toUpperCase())}]`),
@@ -50,11 +50,11 @@ export class Filter extends BaseFilter {
 
     if (sourceOptions.ignoreCase) {
       return Promise.resolve(candidates.filter(
-        (candidate) => candidate.word.toLowerCase().match(pattern),
+        (candidate) => candidate.word.toLowerCase().search(pattern) != -1,
       ));
     } else {
       return Promise.resolve(candidates.filter(
-        (candidate) => candidate.word.match(pattern),
+        (candidate) => candidate.word.search(pattern) != -1,
       ));
     }
   }
