@@ -10,10 +10,13 @@ import { Denops } from "./deps.ts";
 
 export function fuzzy_escape(str: string, camelcase: boolean): string {
   // escape special letters
-  let p = str.replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&');
-  p = str.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
-  if (camelcase && str.match(/[A-Z]/)) {
-    p = p.replaceAll(/([a-z])/g, ((pat) => `[${pat.concat(pat.toUpperCase())}]`));
+  let p = str.replaceAll(/[.*+?^=!:${}()|[\]\/\\]/g, "\\$&");
+  p = p.replaceAll(/([a-zA-Z0-9])/g, "$1.*");
+  if (camelcase && str.search(/[A-Z]/) != -1) {
+    p = p.replaceAll(
+      /([a-z])/g,
+      ((pat) => `[${pat.concat(pat.toUpperCase())}]`),
+    );
   }
   p = p.replaceAll(/([a-zA-Z0-9_])\.\*/g, "$1[^$1]*");
   return p;
@@ -34,24 +37,24 @@ export class Filter extends BaseFilter {
     completeStr: string,
     candidates: Candidate[],
   ): Promise<Candidate[]> {
+    if (!completeStr) {
+      return Promise.resolve(candidates);
+    }
+    let pattern: RegExp;
     if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
-      const pattern = new RegExp(
-        fuzzy_escape(completeStr, filterParams.camelcase as boolean),
-      );
+    }
+    pattern = new RegExp(
+      "^" + fuzzy_escape(completeStr, filterParams.camelcase as boolean),
+    );
+
+    if (sourceOptions.ignoreCase) {
       return Promise.resolve(candidates.filter(
-        (candidate) =>
-          candidate.word.toLowerCase().startsWith(completeStr[0]) &&
-          candidate.word.toLowerCase().match(pattern),
+        (candidate) => candidate.word.toLowerCase().search(pattern) != -1,
       ));
     } else {
-      const pattern = new RegExp(
-        fuzzy_escape(completeStr, filterParams.camelcase as boolean),
-      );
       return Promise.resolve(candidates.filter(
-        (candidate) =>
-          candidate.word.startsWith(completeStr[0]) &&
-          candidate.word.match(pattern),
+        (candidate) => candidate.word.search(pattern) != -1,
       ));
     }
   }
