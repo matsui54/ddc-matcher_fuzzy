@@ -1,12 +1,8 @@
 import {
   BaseFilter,
   Candidate,
-  Context,
-  DdcOptions,
-  FilterOptions,
   SourceOptions,
 } from "./deps.ts";
-import { Denops } from "./deps.ts";
 import { fuzzy_escape } from "./matcher_fuzzy.ts";
 
 type Params = {
@@ -14,28 +10,25 @@ type Params = {
 };
 
 export class Filter extends BaseFilter {
-  filter(
-    _denops: Denops,
-    _context: Context,
-    _options: DdcOptions,
+  filter(args:{
     sourceOptions: SourceOptions,
-    _filterOptions: FilterOptions,
     filterParams: Record<string, unknown>,
     completeStr: string,
     candidates: Candidate[],
-  ): Promise<Candidate[]> {
-    if (sourceOptions.ignoreCase) {
+  }): Promise<Candidate[]> {
+    let completeStr = args.completeStr;
+    if (args.sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
     }
     const pattern = new RegExp(
-      fuzzy_escape(completeStr, filterParams.camelcase as boolean),
+      fuzzy_escape(completeStr, args.filterParams.camelcase as boolean),
     );
-    if (sourceOptions.ignoreCase) {
-      return Promise.resolve(candidates.filter(
+    if (args.sourceOptions.ignoreCase) {
+      return Promise.resolve(args.candidates.filter(
         (candidate) => candidate.word.toLowerCase().match(pattern),
       ));
     } else {
-      return Promise.resolve(candidates.filter(
+      return Promise.resolve(args.candidates.filter(
         (candidate) => candidate.word.match(pattern),
       ));
     }

@@ -1,12 +1,8 @@
 import {
   BaseFilter,
   Candidate,
-  Context,
-  DdcOptions,
-  FilterOptions,
   SourceOptions,
 } from "./deps.ts";
-import { Denops } from "./deps.ts";
 
 export function fuzzy_escape(str: string, camelcase: boolean): string {
   // escape special letters
@@ -27,33 +23,30 @@ type Params = {
 };
 
 export class Filter extends BaseFilter {
-  filter(
-    _denops: Denops,
-    _context: Context,
-    _options: DdcOptions,
-    sourceOptions: SourceOptions,
-    _filterOptions: FilterOptions,
-    filterParams: Record<string, unknown>,
-    completeStr: string,
-    candidates: Candidate[],
-  ): Promise<Candidate[]> {
-    if (!completeStr) {
-      return Promise.resolve(candidates);
+  filter(args: {
+    sourceOptions: SourceOptions;
+    filterParams: Record<string, unknown>;
+    completeStr: string;
+    candidates: Candidate[];
+  }): Promise<Candidate[]> {
+    let completeStr = args.completeStr;
+    if (!args.completeStr) {
+      return Promise.resolve(args.candidates);
     }
     let pattern: RegExp;
-    if (sourceOptions.ignoreCase) {
+    if (args.sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
     }
     pattern = new RegExp(
-      "^" + fuzzy_escape(completeStr, filterParams.camelcase as boolean),
+      "^" + fuzzy_escape(completeStr, args.filterParams.camelcase as boolean),
     );
 
-    if (sourceOptions.ignoreCase) {
-      return Promise.resolve(candidates.filter(
+    if (args.sourceOptions.ignoreCase) {
+      return Promise.resolve(args.candidates.filter(
         (candidate) => candidate.word.toLowerCase().search(pattern) != -1,
       ));
     } else {
-      return Promise.resolve(candidates.filter(
+      return Promise.resolve(args.candidates.filter(
         (candidate) => candidate.word.search(pattern) != -1,
       ));
     }
