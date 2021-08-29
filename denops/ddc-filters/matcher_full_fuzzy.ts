@@ -1,8 +1,10 @@
 import {
   BaseFilter,
   Candidate,
-  SourceOptions,
 } from "https://deno.land/x/ddc_vim@v0.4.1/types.ts#^";
+import{
+  FilterArguments,
+} from "https://deno.land/x/ddc_vim@v0.4.1/base/filter.ts#^";
 import { fuzzy_escape } from "./matcher_fuzzy.ts";
 
 type Params = {
@@ -10,25 +12,24 @@ type Params = {
 };
 
 export class Filter extends BaseFilter {
-  filter(args:{
-    sourceOptions: SourceOptions,
-    filterParams: Record<string, unknown>,
-    completeStr: string,
-    candidates: Candidate[],
-  }): Promise<Candidate[]> {
-    let completeStr = args.completeStr;
-    if (args.sourceOptions.ignoreCase) {
+  filter({
+    sourceOptions,
+    filterParams,
+    completeStr,
+    candidates,
+  }: FilterArguments): Promise<Candidate[]> {
+    if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
     }
     const pattern = new RegExp(
-      fuzzy_escape(completeStr, args.filterParams.camelcase as boolean),
+      fuzzy_escape(completeStr, filterParams.camelcase as boolean),
     );
-    if (args.sourceOptions.ignoreCase) {
-      return Promise.resolve(args.candidates.filter(
+    if (sourceOptions.ignoreCase) {
+      return Promise.resolve(candidates.filter(
         (candidate) => candidate.word.toLowerCase().match(pattern),
       ));
     } else {
-      return Promise.resolve(args.candidates.filter(
+      return Promise.resolve(candidates.filter(
         (candidate) => candidate.word.match(pattern),
       ));
     }
