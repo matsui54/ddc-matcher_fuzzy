@@ -2,7 +2,7 @@ import {
   BaseFilter,
   Candidate,
   SourceOptions,
-} from "./deps.ts";
+} from "https://deno.land/x/ddc_vim@v0.4.1/types.ts#^";
 import { fuzzy_escape } from "./matcher_fuzzy.ts";
 
 type Params = {

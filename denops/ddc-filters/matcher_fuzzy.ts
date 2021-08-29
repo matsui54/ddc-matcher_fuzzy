@@ -2,7 +2,7 @@ import {
   BaseFilter,
   Candidate,
   SourceOptions,
-} from "./deps.ts";
+} from "https://deno.land/x/ddc_vim@v0.4.1/types.ts#^";
 
 export function fuzzy_escape(str: string, camelcase: boolean): string {
   // escape special letters
