@@ -1,31 +1,27 @@
 import {
-  assertEquals,
   Candidate,
-  Context,
-  DdcOptions,
-  Denops,
-  FilterOptions,
-  SourceOptions,
-} from "./deps.ts";
-import { Filter } from "./matcher_fuzzy.ts";
+} from "https://deno.land/x/ddc_vim@v0.4.1/types.ts#^";
+import{
+  FilterArguments
+} from "https://deno.land/x/ddc_vim@v0.4.1/base/filter.ts#^";
+import {
+  assertEquals
+} from "https://deno.land/std@0.106.0/testing/asserts.ts#^";
+import { Filter } from "../matcher_fuzzy.ts";
 
 async function filterWrapper(
-  complete_str: string,
+  completeStr: string,
   candidates: Candidate[],
-  ignorecase: boolean = true,
+  ignoreCase: boolean = true,
   camelcase: boolean = true,
 ): Promise<Candidate[]> {
   let filter = new Filter();
-  return filter.filter(
-    {} as Denops,
-    {} as Context,
-    {} as DdcOptions,
-    { "ignoreCase": ignorecase } as SourceOptions,
-    {} as FilterOptions,
-    { "camelcase": camelcase },
-    complete_str,
+  return filter.filter({
+    sourceOptions: { ignoreCase },
+    filterParams: { camelcase },
+    completeStr,
     candidates,
-  );
+  } as unknown as FilterArguments);
 }
 
 Deno.test("fuzzy filter", async () => {
