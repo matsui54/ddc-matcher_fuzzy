@@ -1,0 +1,67 @@
+*ddc-matcher_fuzzy.txt*				Fuzzy matcher for ddc.vim
+
+Author: matsui54 <haru.matu9168 at gmail.com>
+License: MIT license
+
+CONTENTS					*ddc-matcher_fuzzy-contents*
+
+Introduction		|ddc-matcher_fuzzy-introduction|
+Install			|ddc-matcher_fuzzy-install|
+Examples		|ddc-matcher_fuzzy-examples|
+Sources			|ddc-matcher_fuzzy-sources|
+Params			|ddc-matcher_fuzzy-params|
+
+
+==============================================================================
+INTRODUCTION					*ddc-matcher_fuzzy-introduction*
+
+This matcher filters candidates which matches fuzzily with user input.
+
+For example, candidates like "foobar" matches "fb", "foor" and so on.
+
+==============================================================================
+INSTALL						*ddc-matcher_fuzzy-install*
+
+Please install both "ddc.vim" and "denops.vim".
+
+https://github.com/Shougo/ddc.vim
+https://github.com/vim-denops/denops.vim
+
+
+==============================================================================
+EXAMPLES					*ddc-matcher_fuzzy-examples*
+
+>
+	call ddc#custom#patch_global('sourceOptions', {
+	      \ '_': {
+	      \   'matchers': ['matcher_fuzzy'],
+	      \ })
+
+	call ddc#custom#patch_global('filterParams', {
+	    \ 'matcher_fuzzy': {'camelcase': v:true},
+	    \ })
+<
+
+==============================================================================
+SOURCES						*ddc-matcher_fuzzy-sources*
+
+				  *ddc-matcher_fuzzy-source-matcher_fuzzy*
+matcher_fuzzy		Fuzzy matcher, but the first character must be the same.
+
+				  *ddc-matcher_fuzzy-source-matcher_full_fuzzy*
+matcher_full_fuzzy	Fuzzy matcher, first character doesn't need to be the same.
+
+
+==============================================================================
+PARAMS						*ddc-matcher_fuzzy-params*
+
+					  *ddc-matcher_fuzzy-param-camelcase*
+camelcase	(boolean)
+		It it is true, lowercase characters match with uppercase
+		characters.
+
+		Default: v:true
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
