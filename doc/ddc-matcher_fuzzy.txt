@@ -8,7 +8,7 @@ CONTENTS					*ddc-matcher_fuzzy-contents*
 Introduction		|ddc-matcher_fuzzy-introduction|
 Install			|ddc-matcher_fuzzy-install|
 Examples		|ddc-matcher_fuzzy-examples|
-Sources			|ddc-matcher_fuzzy-sources|
+Matcher			|ddc-matcher_fuzzy-matchers|
 Params			|ddc-matcher_fuzzy-params|
 
 
@@ -43,12 +43,12 @@ EXAMPLES					*ddc-matcher_fuzzy-examples*
 <
 
 ==============================================================================
-SOURCES						*ddc-matcher_fuzzy-sources*
+MATCHERS					*ddc-matcher_fuzzy-matchers*
 
-				  *ddc-matcher_fuzzy-source-matcher_fuzzy*
+				  *ddc-matcher_fuzzy-matchers-matcher_fuzzy*
 matcher_fuzzy		Fuzzy matcher, but the first character must be the same.
 
-				  *ddc-matcher_fuzzy-source-matcher_full_fuzzy*
+				  *ddc-matcher_fuzzy-matchers-matcher_full_fuzzy*
 matcher_full_fuzzy	Fuzzy matcher, first character doesn't need to be the same.
 
 
