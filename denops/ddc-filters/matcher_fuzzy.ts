@@ -1,10 +1,10 @@
 import {
   BaseFilter,
   Candidate,
-} from "https://deno.land/x/ddc_vim@v0.4.1/types.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.5.0/types.ts#^";
 import{
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v0.4.1/base/filter.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.5.0/base/filter.ts#^";
 
 export function fuzzy_escape(str: string, camelcase: boolean): string {
   // escape special letters
