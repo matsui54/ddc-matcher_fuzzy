@@ -1,9 +1,9 @@
 import {
   Candidate,
-} from "https://deno.land/x/ddc_vim@v0.5.0/types.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.5.2/types.ts#^";
 import{
   FilterArguments
-} from "https://deno.land/x/ddc_vim@v0.5.0/base/filter.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.5.2/base/filter.ts#^";
 import {
   assertEquals
 } from "https://deno.land/std@0.106.0/testing/asserts.ts#^";
