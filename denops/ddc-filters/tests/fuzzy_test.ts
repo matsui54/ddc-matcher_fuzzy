@@ -52,11 +52,20 @@ Deno.test("fuzzy filter", async () => {
     { "word": "Foobar" },
     { "word": "FooBar" },
   ]);
+  assertEquals(await filterWrapper("foBr", testCandidates, false, false), [
+    { "word": "fooBar" },
+  ]);
   assertEquals(await filterWrapper("foBr", testCandidates, false, true), [
     { "word": "fooBar" },
     { "word": "FooBar" },
   ]);
   assertEquals(await filterWrapper("fobr", testCandidates, true, false), [
+    { "word": "foobar" },
+    { "word": "fooBar" },
+    { "word": "Foobar" },
+    { "word": "FooBar" },
+  ]);
+  assertEquals(await filterWrapper("fobr", testCandidates, true, true), [
     { "word": "foobar" },
     { "word": "fooBar" },
     { "word": "Foobar" },

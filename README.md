@@ -10,8 +10,7 @@ https://github.com/vim-denops/denops.vim
 https://github.com/Shougo/ddc.vim
 
 ## Configuration
-### params
-- camelcase: If it is true, lowercase letters match with uppercase letters.
+For details, please see [help](doc/ddc-matcher_fuzzy.txt).
 
 ### examples
 ```vim
