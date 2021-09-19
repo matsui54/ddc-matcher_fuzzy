@@ -1,12 +1,12 @@
 import {
   Candidate,
-} from "https://deno.land/x/ddc_vim@v0.5.2/types.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.11.0/types.ts#^";
 import{
   FilterArguments
-} from "https://deno.land/x/ddc_vim@v0.5.2/base/filter.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.11.0/base/filter.ts#^";
 import {
   assertEquals
-} from "https://deno.land/std@0.106.0/testing/asserts.ts#^";
+} from "https://deno.land/std@0.107.0/testing/asserts.ts#^";
 import { Filter } from "../matcher_fuzzy.ts";
 
 async function filterWrapper(

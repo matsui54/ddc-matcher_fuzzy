@@ -1,28 +1,28 @@
 import {
   BaseFilter,
   Candidate,
-} from "https://deno.land/x/ddc_vim@v0.5.2/types.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.11.0/types.ts#^";
 import{
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v0.5.2/base/filter.ts#^";
-import { fuzzy_escape } from "./matcher_fuzzy.ts";
+} from "https://deno.land/x/ddc_vim@v0.11.0/base/filter.ts#^";
+import { fuzzyEscape } from "./matcher_fuzzy.ts";
 
 type Params = {
   camelcase: boolean;
 };
 
-export class Filter extends BaseFilter {
+export class Filter extends BaseFilter<Params> {
   filter({
     sourceOptions,
     filterParams,
     completeStr,
     candidates,
-  }: FilterArguments): Promise<Candidate[]> {
+  }: FilterArguments<Params>): Promise<Candidate[]> {
     if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
     }
     const pattern = new RegExp(
-      fuzzy_escape(completeStr, filterParams.camelcase as boolean),
+      fuzzyEscape(completeStr, filterParams.camelcase as boolean),
     );
     if (sourceOptions.ignoreCase) {
       return Promise.resolve(candidates.filter(
@@ -35,10 +35,9 @@ export class Filter extends BaseFilter {
     }
   }
 
-  params(): Record<string, unknown> {
-    const params: Params = {
+  params(): Params {
+    return {
       camelcase: false,
     };
-    return params as unknown as Record<string, unknown>;
   }
 }
