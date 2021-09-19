@@ -57,7 +57,7 @@ PARAMS						*ddc-matcher_fuzzy-params*
 
 					  *ddc-matcher_fuzzy-param-camelcase*
 camelcase	(boolean)
-		It it is true, when user input includes uppercase character,
+		If it is true, when user input includes uppercase character,
 		lowercase characters in input match with uppercase characters
 		of candidates.
 		Ex: "foB" is matched with "FooBar" but not with "foobar".
