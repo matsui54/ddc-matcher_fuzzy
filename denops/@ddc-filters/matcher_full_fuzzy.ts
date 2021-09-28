@@ -7,7 +7,7 @@ import{
 } from "https://deno.land/x/ddc_vim@v0.14.0/base/filter.ts#^";
 import { fuzzyEscape } from "./matcher_fuzzy.ts";
 
-type Params = {
+export type Params = {
   camelcase: boolean;
 };
 

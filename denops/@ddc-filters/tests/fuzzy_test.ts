@@ -7,25 +7,25 @@ import{
 import {
   assertEquals
 } from "https://deno.land/std@0.108.0/testing/asserts.ts#^";
-import { Filter } from "../matcher_fuzzy.ts";
+import { Filter, Params } from "../matcher_fuzzy.ts";
 
-async function filterWrapper(
+export function filterWrapper(
   completeStr: string,
   candidates: Candidate[],
-  ignoreCase: boolean = true,
-  camelcase: boolean = true,
+  ignoreCase = true,
+  camelcase = true,
 ): Promise<Candidate[]> {
-  let filter = new Filter();
+  const filter = new Filter();
   return filter.filter({
     sourceOptions: { ignoreCase },
     filterParams: { camelcase },
     completeStr,
     candidates,
-  } as unknown as FilterArguments);
+  } as unknown as FilterArguments<Params>);
 }
 
 Deno.test("fuzzy filter", async () => {
-  let testCandidates = [
+  const testCandidates = [
     { "word": "foobar" },
     { "word": "afoobar" },
     { "word": "fooBar" },
@@ -76,4 +76,7 @@ Deno.test("fuzzy filter", async () => {
   ]);
 
   await filterWrapper("foo+=", testCandidates, false, false);
+  assertEquals(await filterWrapper("hg", [{"word": 'Hoge'}], true, false), [
+    { "word": "Hoge" },
+  ]);
 });

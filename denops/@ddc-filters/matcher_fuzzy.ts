@@ -2,7 +2,7 @@ import {
   BaseFilter,
   Candidate,
 } from "https://deno.land/x/ddc_vim@v0.14.0/types.ts#^";
-import{
+import {
   FilterArguments,
 } from "https://deno.land/x/ddc_vim@v0.14.0/base/filter.ts#^";
 
@@ -20,7 +20,7 @@ export function fuzzyEscape(str: string, camelcase: boolean): string {
   return p;
 }
 
-type Params = {
+export type Params = {
   camelcase: boolean;
 };
 
@@ -30,7 +30,7 @@ export class Filter extends BaseFilter<Params> {
     filterParams,
     completeStr,
     candidates,
-  }:FilterArguments<Params>): Promise<Candidate[]> {
+  }: FilterArguments<Params>): Promise<Candidate[]> {
     if (!completeStr) {
       return Promise.resolve(candidates);
     }
