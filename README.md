@@ -1,6 +1,8 @@
 # ddc-matcher_fuzzy
 Fuzzy matcher for ddc.vim
 
+For better support such as sorting candidates by match distance and pum.vim's highlighting support, use [ddc-fuzzy](https://github.com/tani/ddc-fuzzy) instead.
+
 ## Required
 
 ### denops.vim
