@@ -1,10 +1,7 @@
-import {
-  BaseFilter,
-  Candidate,
-} from "https://deno.land/x/ddc_vim@v0.14.0/types.ts#^";
+import { BaseFilter, Item } from "https://deno.land/x/ddc_vim@v3.3.0/types.ts";
 import {
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v0.14.0/base/filter.ts#^";
+} from "https://deno.land/x/ddc_vim@v3.3.0/base/filter.ts";
 
 export function fuzzyEscape(str: string, camelcase: boolean): string {
   // escape special letters
@@ -13,7 +10,7 @@ export function fuzzyEscape(str: string, camelcase: boolean): string {
   if (camelcase && str.search(/[A-Z]/) != -1) {
     p = p.replaceAll(
       /([a-z])/g,
-      ((pat) => `[${pat.concat(pat.toUpperCase())}]`),
+      (pat) => `[${pat.concat(pat.toUpperCase())}]`,
     );
   }
   p = p.replaceAll(/([a-zA-Z0-9_])\.\*/g, "$1[^$1]*");
@@ -29,25 +26,24 @@ export class Filter extends BaseFilter<Params> {
     sourceOptions,
     filterParams,
     completeStr,
-    candidates,
-  }: FilterArguments<Params>): Promise<Candidate[]> {
+    items,
+  }: FilterArguments<Params>): Promise<Item[]> {
     if (!completeStr) {
-      return Promise.resolve(candidates);
+      return Promise.resolve(items);
     }
-    let pattern: RegExp;
     if (sourceOptions.ignoreCase) {
       completeStr = completeStr.toLowerCase();
     }
-    pattern = new RegExp(
+    const pattern = new RegExp(
       "^" + fuzzyEscape(completeStr, filterParams.camelcase as boolean),
     );
 
     if (sourceOptions.ignoreCase) {
-      return Promise.resolve(candidates.filter(
+      return Promise.resolve(items.filter(
         (candidate) => candidate.word.toLowerCase().search(pattern) != -1,
       ));
     } else {
-      return Promise.resolve(candidates.filter(
+      return Promise.resolve(items.filter(
         (candidate) => candidate.word.search(pattern) != -1,
       ));
     }

@@ -1,27 +1,23 @@
+import { Item } from "https://deno.land/x/ddc_vim@v3.3.0/types.ts";
 import {
-  Candidate,
-} from "https://deno.land/x/ddc_vim@v0.14.0/types.ts#^";
-import{
-  FilterArguments
-} from "https://deno.land/x/ddc_vim@v0.14.0/base/filter.ts#^";
-import {
-  assertEquals
-} from "https://deno.land/std@0.108.0/testing/asserts.ts#^";
+  FilterArguments,
+} from "https://deno.land/x/ddc_vim@v3.3.0/base/filter.ts";
+import { assertEquals } from "https://deno.land/std@0.166.0/testing/asserts.ts";
 import { Filter, Params } from "../matcher_fuzzy.ts";
 
 export function filterWrapper(
   completeStr: string,
-  candidates: Candidate[],
+  items: Item[],
   ignoreCase = true,
   camelcase = true,
-): Promise<Candidate[]> {
+): Promise<Item[]> {
   const filter = new Filter();
   return filter.filter({
     sourceOptions: { ignoreCase },
     filterParams: { camelcase },
     completeStr,
-    candidates,
-  } as unknown as FilterArguments<Params>);
+    items,
+  } as FilterArguments<Params>);
 }
 
 Deno.test("fuzzy filter", async () => {
@@ -76,7 +72,7 @@ Deno.test("fuzzy filter", async () => {
   ]);
 
   await filterWrapper("foo+=", testCandidates, false, false);
-  assertEquals(await filterWrapper("hg", [{"word": 'Hoge'}], true, false), [
+  assertEquals(await filterWrapper("hg", [{ "word": "Hoge" }], true, false), [
     { "word": "Hoge" },
   ]);
 });
